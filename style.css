@@ -440,6 +440,18 @@ html, body {
   margin: 20px 0;
 }
 
+.ranking-secret-msg {
+  background: linear-gradient(135deg, var(--green), var(--blue));
+  color: #fff;
+  font-weight: 800;
+  border-radius: 16px;
+  padding: 12px 20px;
+  margin: 0 0 16px;
+  max-width: 440px;
+  width: 100%;
+  animation: pop 0.35s ease;
+}
+
 .unsupported-banner {
   position: fixed;
   bottom: 0;

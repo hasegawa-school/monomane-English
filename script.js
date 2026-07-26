@@ -32,6 +32,7 @@ const el = {
   resultName: document.getElementById("result-name"),
   rankingList: document.getElementById("ranking-list"),
   rankingEmpty: document.getElementById("ranking-empty"),
+  rankingSecretMsg: document.getElementById("ranking-secret-msg"),
   unsupportedBanner: document.getElementById("unsupported-banner"),
   mistakeCard: document.getElementById("mistake-card"),
   heardText: document.getElementById("heard-text"),
@@ -62,6 +63,15 @@ let state = {
 function showScreen(name) {
   Object.values(screens).forEach((s) => s.classList.remove("active"));
   screens[name].classList.add("active");
+
+  if (name === "ranking") {
+    renderRanking();
+    startRankingAutoRefresh();
+  } else {
+    stopRankingAutoRefresh();
+  }
+  // 画面を切りかえたら秘密コードの入力バッファはリセットする
+  secretBuffer = "";
 }
 
 // ---------- 音声合成 (読み上げ) ----------
@@ -598,6 +608,57 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
+// ---------- ランキング画面を開いている間、5秒おきに自動更新 ----------
+let rankingRefreshIntervalId = null;
+
+function startRankingAutoRefresh() {
+  stopRankingAutoRefresh();
+  rankingRefreshIntervalId = setInterval(renderRanking, 5000);
+}
+
+function stopRankingAutoRefresh() {
+  if (rankingRefreshIntervalId) {
+    clearInterval(rankingRefreshIntervalId);
+    rankingRefreshIntervalId = null;
+  }
+}
+
+// ---------- 先生用のひみつコマンド（ランキングのリセット） ----------
+// ランキング画面を開いた状態で「yorosikune3」と入力すると、ランキングがリセットされる。
+// 画面上にボタンなどは表示せず、子どもが誤って操作しないようにしている。
+const SECRET_RESET_CODE = "yorosikune3";
+let secretBuffer = "";
+let secretMsgTimeoutId = null;
+
+document.addEventListener("keydown", (e) => {
+  // ランキング画面が表示されているときだけ受け付ける
+  if (!screens.ranking.classList.contains("active")) return;
+  // 通常の文字キー以外（Shift・Enter・矢印キーなど）は無視する
+  if (!e.key || e.key.length !== 1) return;
+
+  secretBuffer = (secretBuffer + e.key.toLowerCase()).slice(-SECRET_RESET_CODE.length);
+
+  if (secretBuffer === SECRET_RESET_CODE) {
+    secretBuffer = "";
+    resetRankingBySecretCode();
+  }
+});
+
+function resetRankingBySecretCode() {
+  saveRanking([]);
+  renderRanking();
+  showRankingSecretMessage("🔐 ランキングを リセットしました");
+}
+
+function showRankingSecretMessage(msg) {
+  el.rankingSecretMsg.textContent = msg;
+  el.rankingSecretMsg.style.display = "block";
+  if (secretMsgTimeoutId) clearTimeout(secretMsgTimeoutId);
+  secretMsgTimeoutId = setTimeout(() => {
+    el.rankingSecretMsg.style.display = "none";
+  }, 3000);
+}
+
 // ---------- 非対応ブラウザ表示 ----------
 function showUnsupported() {
   el.unsupportedBanner.style.display = "block";
@@ -617,7 +678,6 @@ el.btnStart.addEventListener("click", () => {
 });
 
 el.btnShowRanking.addEventListener("click", () => {
-  renderRanking();
   showScreen("ranking");
 });
 
@@ -636,7 +696,6 @@ el.btnRetry.addEventListener("click", () => {
 });
 
 el.btnGotoRanking.addEventListener("click", () => {
-  renderRanking();
   showScreen("ranking");
 });
 
