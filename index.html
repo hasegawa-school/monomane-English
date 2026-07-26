@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
+<title>まねっこ英語</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="bg-stars"></div>
+
+<!-- タイトル画面 -->
+<section id="screen-title" class="screen active">
+  <div class="floaty" style="--d:0s">⭐</div>
+  <div class="floaty" style="--d:1.2s">🎈</div>
+  <div class="floaty" style="--d:2.1s">🌈</div>
+  <div class="floaty" style="--d:0.6s">🎵</div>
+
+  <h1 class="game-title">
+    <span class="t1">まねっこ</span><span class="t2">英語</span>
+  </h1>
+  <p class="subtitle">おともだちマイクくんと えいごで あそぼう！</p>
+
+  <div class="mascot" id="mascot-title">🦊</div>
+
+  <button id="btn-start" class="btn btn-primary btn-big">
+    <span class="btn-icon">▶</span> スタート
+  </button>
+  <button id="btn-show-ranking" class="btn btn-secondary">
+    <span class="btn-icon">🏆</span> ランキングを見る
+  </button>
+
+  <p class="mic-hint">はじめに マイクの つかいかたを きかれたら「ゆるす」を おしてね🎤</p>
+</section>
+
+<!-- ゲーム画面 -->
+<section id="screen-game" class="screen">
+  <div class="hud">
+    <div class="hud-item">
+      <span class="hud-label">スコア</span>
+      <span id="hud-score" class="hud-value">0</span>
+    </div>
+    <div class="hud-item">
+      <span class="hud-label">もんだい</span>
+      <span id="hud-qnum" class="hud-value">1</span>
+    </div>
+  </div>
+
+  <div class="mascot" id="mascot-game">🦊</div>
+
+  <div class="card question-card">
+    <p class="question-label">このぶんを まねしてね</p>
+    <p id="question-text" class="question-text">Hello.</p>
+    <p id="question-jp" class="question-jp">（こんにちは。）</p>
+    <button id="btn-listen" class="btn btn-round">
+      🔊 きく
+    </button>
+  </div>
+
+  <div class="record-area">
+    <button id="btn-record" class="record-btn">
+      <span id="record-icon">🎤</span>
+    </button>
+    <p id="record-status" class="record-status">マイクを おしてね</p>
+  </div>
+
+  <div id="feedback" class="feedback"></div>
+
+  <div id="mistake-card" class="card mistake-card" style="display:none;">
+    <p class="mistake-label">🎧 きこえたよ</p>
+    <p id="heard-text" class="heard-text"></p>
+    <p class="mistake-label">✅ せいかいの ぶん</p>
+    <p id="diff-words" class="diff-words"></p>
+    <p id="tip-text" class="tip-text"></p>
+  </div>
+</section>
+
+<!-- 結果画面 -->
+<section id="screen-result" class="screen">
+  <div class="mascot mascot-result" id="mascot-result">🎉</div>
+  <h2 id="result-title" class="result-title">よく がんばったね！</h2>
+  <p class="result-sub">クリアした もんだいすう</p>
+  <p id="result-score" class="result-score">0</p>
+  <div class="card result-name-card">
+    <p class="result-name-label">あなたの プレイヤーめい</p>
+    <p id="result-name" class="result-name">きらきらのパンダ</p>
+  </div>
+
+  <div id="review-card" class="card review-card" style="display:none;">
+    <p class="review-label">さいごの もんだいを ふりかえろう</p>
+    <p id="review-target" class="review-target"></p>
+    <p class="mistake-label">🎧 きこえたよ</p>
+    <p id="review-heard" class="heard-text"></p>
+    <p id="review-diff" class="diff-words"></p>
+    <p id="review-tip" class="tip-text"></p>
+  </div>
+
+  <button id="btn-retry" class="btn btn-primary btn-big">
+    <span class="btn-icon">🔄</span> もういちど ちょうせん！
+  </button>
+  <button id="btn-goto-ranking" class="btn btn-secondary">
+    <span class="btn-icon">🏆</span> ランキングを見る
+  </button>
+  <button id="btn-goto-title2" class="btn btn-ghost">タイトルへ もどる</button>
+</section>
+
+<!-- ランキング画面 -->
+<section id="screen-ranking" class="screen">
+  <h2 class="ranking-title">🏆 ランキング 🏆</h2>
+  <ol id="ranking-list" class="ranking-list"></ol>
+  <p id="ranking-empty" class="ranking-empty">まだ きろくが ないよ。あそんで ランキングに のろう！</p>
+  <button id="btn-back-title" class="btn btn-primary btn-big">タイトルへ もどる</button>
+</section>
+
+<!-- 非対応ブラウザ用の通知 -->
+<div id="unsupported-banner" class="unsupported-banner" style="display:none;">
+  このブラウザは おんせいにんしき に たいおうしていません。<br />
+  さいしんの Google Chrome（パソコン・スマホ）で ひらいてね。
+</div>
+
+<script src="sentences.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
