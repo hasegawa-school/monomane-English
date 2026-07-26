@@ -219,7 +219,7 @@ function isMatch(target, candidates) {
   return candidates.some((c) => {
     const sim = similarity(target, c);
     const overlap = wordOverlapRatio(target, c);
-    return sim >= 0.72 || overlap >= 0.75;
+    return sim >= 0.8 || overlap >= 0.8;
   });
 }
 
